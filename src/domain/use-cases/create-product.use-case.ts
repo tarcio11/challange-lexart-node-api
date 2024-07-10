@@ -1,5 +1,6 @@
 import { Product } from "@/domain/entities/product"
 import { ProductRepository } from "@/domain/contracts/repositories/product"
+import { UseCase } from "./use-case"
 
 export type Input = {
   name: string
@@ -7,7 +8,7 @@ export type Input = {
   stock: number
 }
 
-export class CreateProductUseCase {
+export class CreateProductUseCase implements UseCase<Input, void> {
   constructor(private readonly productRepository: ProductRepository) {}
 
   async execute(input: Input): Promise<void> {

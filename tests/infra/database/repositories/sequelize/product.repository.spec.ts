@@ -56,6 +56,18 @@ export class SequelizeProductRepository {
     return Product.create(product.toJSON());
   }
 
+  async getMany (options: { perPage: number, page: number }): Promise<{ data: Product[], total: number }> {
+    const { perPage, page } = options;
+    const { count, rows } = await this.categoryModel.findAndCountAll({
+      limit: perPage,
+      offset: (page - 1) * perPage,
+    });
+
+    return {
+      data: rows.map(row => new Product(row.toJSON())),
+      total: count,
+    };
+  }
 }
 
 export function setupSequelize(options: SequelizeOptions = {}) {
@@ -90,35 +102,62 @@ describe('Repository: SequelizeProductRepository', () => {
     sut = new SequelizeProductRepository(ProductModel);
   });
 
-  it('should to be able create a new product', async () => {
-    const product = Product.create({ name: 'any_name', price: 10, stock: 10 });
-    await sut.create(product);
+  describe('create', () => {
+    it('should to be able create a new product', async () => {
+      const product = Product.create({ name: 'any_name', price: 10, stock: 10 });
+      await sut.create(product);
 
-    const [result] = await ProductModel.findAll();
+      const [result] = await ProductModel.findAll();
 
-    expect(result.toJSON()).toEqual(expect.objectContaining({
-      name: 'any_name',
-      price: 10,
-      stock: 10,
-    }));
+      expect(result.toJSON()).toEqual(expect.objectContaining({
+        name: 'any_name',
+        price: 10,
+        stock: 10,
+      }));
+    });
   });
 
-  it('should to be able get a product by id', async () => {
-    const product = Product.create({ name: 'any_name', price: 10, stock: 10 });
-    await sut.create(product);
-    const [searched] = await ProductModel.findAll();
+  describe('getOne', () => {
+    it('should to be able get a product by id', async () => {
+      const product = Product.create({ name: 'any_name', price: 10, stock: 10 });
+      await sut.create(product);
+      const [searched] = await ProductModel.findAll();
 
-    const result = await sut.getOne(searched.id);
+      const result = await sut.getOne(searched.id);
 
-    expect(result.toJSON()).toEqual(expect.objectContaining({
-      id: searched.id,
-      name: 'any_name',
-      price: 10,
-      stock: 10
-    }));
+      expect(result.toJSON()).toEqual(expect.objectContaining({
+        id: searched.id,
+        name: 'any_name',
+        price: 10,
+        stock: 10
+      }));
+    });
+
+    it('should throw if product not found', async () => {
+      await expect(sut.getOne('invalid_id')).rejects.toThrow('Product not found');
+    });
   });
 
-  it('should throw if product not found', async () => {
-    await expect(sut.getOne('invalid_id')).rejects.toThrow('Product not found');
+  describe('getMany', () => {
+    it('should to be able get many products', async () => {
+      await sut.create(Product.create({ name: 'any_name', price: 10, stock: 10 }));
+      await sut.create(Product.create({ name: 'other_name', price: 20, stock: 20 }));
+
+      const result = await sut.getMany({ perPage: 2, page: 1 });
+
+      expect(result).toEqual({
+        data: [
+          expect.objectContaining({ name: 'any_name', price: 10, stock: 10 }),
+          expect.objectContaining({ name: 'other_name', price: 20, stock: 20 }),
+        ],
+        total: 2,
+      });
+    });
+  });
+
+  it('should be able get an empty list', async () => {
+    const result = await sut.getMany({ perPage: 2, page: 1 });
+
+    expect(result).toEqual({ data: [], total: 0 });
   });
 });

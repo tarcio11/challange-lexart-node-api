@@ -53,3 +53,25 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/products
 Content-Type: application/json
 
+############################################################
+
+###
+# @name createUser
+POST http://localhost:3000/api/signUp
+Content-Type: application/json
+
+{
+  "name": "Tarcio Rocha",
+  "email": "tarcio_x@hotmail.com",
+  "password": "123456"
+}
+
+###
+# @name loginUser
+POST http://localhost:3000/api/signIn
+Content-Type: application/json
+
+{
+  "email": "tarcio_x@hotmail.com",
+  "password": "123456"
+}

@@ -65,4 +65,12 @@ describe('UseCase: UpdateProduct', () => {
     expect(productRepository.save).toHaveBeenCalledWith(product)
     expect(productRepository.save).toHaveBeenCalledTimes(1)
   })
+
+  it('should rethrow if Product.save throws', async () => {
+    productRepository.save.mockRejectedValueOnce(new Error('any_repository_error'))
+
+    const promise = sut.execute(input)
+
+    await expect(promise).rejects.toThrow(new Error('any_repository_error'))
+  })
 })

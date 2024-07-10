@@ -7,4 +7,5 @@ export interface ProductRepository {
   save: (product: Product) => Promise<void>
   delete: (id: string) => Promise<void>
   loadData: () => Promise<void>
+  deleteAll: () => Promise<void>
 }

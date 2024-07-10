@@ -49,6 +49,13 @@ export class SequelizeProductRepository {
       stock: data.stock,
     });
   }
+
+  async getOne (id: string): Promise<Product> {
+    const product = await this.categoryModel.findByPk(id);
+    if (!product) throw new Error('Product not found');
+    return Product.create(product.toJSON());
+  }
+
 }
 
 export function setupSequelize(options: SequelizeOptions = {}) {
@@ -83,7 +90,7 @@ describe('Repository: SequelizeProductRepository', () => {
     sut = new SequelizeProductRepository(ProductModel);
   });
 
-  it('should a be able create a new product', async () => {
+  it('should to be able create a new product', async () => {
     const product = Product.create({ name: 'any_name', price: 10, stock: 10 });
     await sut.create(product);
 
@@ -93,6 +100,21 @@ describe('Repository: SequelizeProductRepository', () => {
       name: 'any_name',
       price: 10,
       stock: 10,
+    }));
+  });
+
+  it('should to be able get a product by id', async () => {
+    const product = Product.create({ name: 'any_name', price: 10, stock: 10 });
+    await sut.create(product);
+    const [searched] = await ProductModel.findAll();
+
+    const result = await sut.getOne(searched.id);
+
+    expect(result.toJSON()).toEqual(expect.objectContaining({
+      id: searched.id,
+      name: 'any_name',
+      price: 10,
+      stock: 10
     }));
   });
 });

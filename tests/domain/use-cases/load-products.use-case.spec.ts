@@ -5,7 +5,7 @@ export class LoadProductsUseCase {
   constructor(private readonly productRepository: ProductRepository) {}
 
   async execute() {
-    return await this.productRepository.loadData()
+    await this.productRepository.loadData()
   }
 }
 
@@ -26,5 +26,13 @@ describe('UseCase: LoadProducts', () => {
     await sut.execute()
 
     expect(productRepository.loadData).toHaveBeenCalledTimes(1)
+  })
+
+  it('should rethrow if ProductRepository.loadData throws', async () => {
+    productRepository.loadData.mockRejectedValueOnce(new Error('Repository error'))
+
+    const promise = sut.execute()
+
+    await expect(promise).rejects.toThrow(new Error('Repository error'))
   })
 })

@@ -14,12 +14,12 @@ type CreateCommand = {
 }
 
 class Product {
-  id?: string
-  name: string
-  price: number
-  stock: number
-  createdAt?: Date
-  updatedAt?: Date
+  private id?: string
+  private name: string
+  private price: number
+  private stock: number
+  private createdAt?: Date
+  private updatedAt?: Date
 
   constructor (props: ProductModel) {
     this.id = props.id
@@ -32,6 +32,21 @@ class Product {
 
   static create (command: CreateCommand): Product {
     return new Product(command)
+  }
+
+  changeStock (stock: number): void {
+    this.stock = stock
+  }
+
+  toJSON (): ProductModel {
+    return {
+      id: this.id,
+      name: this.name,
+      price: this.price,
+      stock: this.stock,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt
+    }
   }
 }
 
@@ -85,5 +100,17 @@ describe('Domain: Product', () => {
       price: 10,
       stock: 10,
     })
+  })
+
+  it('should be able to update product stock', () => {
+    const sut = new Product({
+      name: 'any_name',
+      price: 10,
+      stock: 10
+    })
+
+    sut.changeStock(20)
+
+    expect(sut.toJSON().stock).toBe(20)
   })
 });

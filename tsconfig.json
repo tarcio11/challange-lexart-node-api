@@ -1,11 +1,26 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "rootDirs": ["src", "tests"],
     "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "target": "ES2022",
-    "esModuleInterop": true,
     "sourceMap": true,
-    "rootDir": "src",
-    "baseUrl": "src",
-  },
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@/*": ["*"],
+      "@/tests/*": ["../tests/*"]
+    }
+  }
 }

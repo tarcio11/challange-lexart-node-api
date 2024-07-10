@@ -261,5 +261,22 @@ describe('Repository: SequelizeProductRepository', () => {
         total: 1,
       });
     })
+
+    it('should to be able search products by id', async () => {
+      const instance1 = Product.create({ name: 'any_name', price: 10, stock: 10 });
+      const instance2 = Product.create({ name: 'other_name', price: 15, stock: 15 });
+      await sut.create(instance1);
+      await sut.create(instance2);
+      const [searched] = await ProductModel.findAll();
+
+      const result = await sut.search({ perPage: 2, page: 1, id: searched.id });
+
+      expect(result).toEqual({
+        data: [
+          expect.objectContaining({ name: 'any_name', price: 10, stock: 10 }),
+        ],
+        total: 1,
+      });
+    })
   })
 });

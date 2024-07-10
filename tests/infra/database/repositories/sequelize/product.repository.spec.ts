@@ -78,6 +78,10 @@ export class SequelizeProductRepository {
       stock: data.stock,
     }, { where: { id: data.id } });
   }
+
+  async delete (id: string): Promise<void> {
+    await this.categoryModel.destroy({ where: { id } });
+  }
 }
 
 export function setupSequelize(options: SequelizeOptions = {}) {
@@ -189,6 +193,20 @@ describe('Repository: SequelizeProductRepository', () => {
         price: 20,
         stock: 20,
       }));
+    });
+  });
+
+  describe('delete', () => {
+    it('should to be able delete a product', async () => {
+      const instance = Product.create({ name: 'any_name', price: 10, stock: 10 });
+      await sut.create(instance);
+      const [searched] = await ProductModel.findAll();
+
+      await sut.delete(searched.id);
+
+      const result = await ProductModel.findAll();
+
+      expect(result).toEqual([]);
     });
   });
 });

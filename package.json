@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rimraf dist && npx tsc",
     "start:dev": "cross-env NODE_ENV=development ts-node src/server.ts",
+    "start": "node dist/server.js",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm t -- --watch",
     "test:cov": "jest --coverage --no-cache --runInBand",

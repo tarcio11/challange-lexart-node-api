@@ -86,6 +86,22 @@ export class SequelizeProductRepository {
   async deleteAll (): Promise<void> {
     await this.categoryModel.destroy({ truncate: true });
   }
+
+  async search (options: { perPage: number, page: number, id?: string, name?: string }): Promise<{ data: Product[], total: number }> {
+    const { perPage, page, id, name } = options;
+    const where = { ...(id && { id }), ...(name && { name }) };
+    const { count, rows } = await this.categoryModel.findAndCountAll({
+      where,
+      limit: perPage,
+      offset: (page - 1) * perPage,
+    });
+
+    return {
+      data: rows.map(row => new Product(row.toJSON())),
+      total: count,
+    };
+
+  }
 }
 
 export function setupSequelize(options: SequelizeOptions = {}) {
@@ -226,6 +242,24 @@ describe('Repository: SequelizeProductRepository', () => {
       const result = await ProductModel.findAll();
 
       expect(result).toEqual([]);
+    })
+  })
+
+  describe('search', () => {
+    it('should to be able search products by name', async () => {
+      const instance1 = Product.create({ name: 'any_name', price: 10, stock: 10 });
+      const instance2 = Product.create({ name: 'other_name', price: 15, stock: 15 });
+      await sut.create(instance1);
+      await sut.create(instance2);
+
+      const result = await sut.search({ perPage: 2, page: 1, name: 'any_name' });
+
+      expect(result).toEqual({
+        data: [
+          expect.objectContaining({ name: 'any_name', price: 10, stock: 10 }),
+        ],
+        total: 1,
+      });
     })
   })
 });

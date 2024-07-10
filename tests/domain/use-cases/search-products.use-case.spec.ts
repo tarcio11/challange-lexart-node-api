@@ -7,7 +7,11 @@ export class SearchProductsUseCase {
   constructor(private readonly productRepository: ProductRepository) {}
 
   async execute(input: Input) {
-    await this.productRepository.search(input)
+    const result = await this.productRepository.search(input)
+    return {
+      data: result.data.map(product => product.toJSON()),
+      total: result.total
+    }
   }
 }
 
@@ -19,6 +23,7 @@ describe('UseCase: SearchProducts', () => {
   beforeAll(() => {
     input = { perPage: 10, page: 1, id: 'any_id', name: 'any_name' }
     productRepository = mock()
+    productRepository.search.mockResolvedValue({ data: [], total: 0 })
   })
 
   beforeEach(() => {
@@ -38,5 +43,12 @@ describe('UseCase: SearchProducts', () => {
     const promise = sut.execute(input)
 
     await expect(promise).rejects.toThrow(new Error('any_repository_error'))
+  })
+
+  it('should return correctly on success', async () => {
+
+    const result = await sut.execute(input)
+
+    expect(result).toEqual({ data: [], total: 0 })
   })
 })

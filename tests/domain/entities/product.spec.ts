@@ -7,6 +7,12 @@ type ProductModel = {
   updatedAt?: Date
 }
 
+type CreateCommand = {
+  name: string
+  price: number
+  stock: number
+}
+
 class Product {
   id?: string
   name: string
@@ -22,6 +28,10 @@ class Product {
     this.stock = props.stock
     this.createdAt = props.createdAt
     this.updatedAt = props.updatedAt
+  }
+
+  static create (command: CreateCommand): Product {
+    return new Product(command)
   }
 }
 
@@ -62,4 +72,18 @@ describe('Domain: Product', () => {
       updatedAt
     })
   });
+
+  it('should be able to create a new product to factory method', () => {
+    const sut = Product.create({
+      name: 'any_name',
+      price: 10,
+      stock: 10,
+    })
+
+    expect(sut).toEqual({
+      name: 'any_name',
+      price: 10,
+      stock: 10,
+    })
+  })
 });

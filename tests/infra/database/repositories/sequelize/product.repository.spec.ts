@@ -82,6 +82,10 @@ export class SequelizeProductRepository {
   async delete (id: string): Promise<void> {
     await this.categoryModel.destroy({ where: { id } });
   }
+
+  async deleteAll (): Promise<void> {
+    await this.categoryModel.destroy({ truncate: true });
+  }
 }
 
 export function setupSequelize(options: SequelizeOptions = {}) {
@@ -209,4 +213,19 @@ describe('Repository: SequelizeProductRepository', () => {
       expect(result).toEqual([]);
     });
   });
+
+  describe('deleteAll', () => {
+    it('should to be able delete all products', async () => {
+      const instance1 = Product.create({ name: 'any_name', price: 10, stock: 10 });
+      const instance2 = Product.create({ name: 'other_name', price: 15, stock: 15 });
+      await sut.create(instance1);
+      await sut.create(instance2);
+
+      await sut.deleteAll();
+
+      const result = await ProductModel.findAll();
+
+      expect(result).toEqual([]);
+    })
+  })
 });

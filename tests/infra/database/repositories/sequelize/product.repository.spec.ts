@@ -117,4 +117,8 @@ describe('Repository: SequelizeProductRepository', () => {
       stock: 10
     }));
   });
+
+  it('should throw if product not found', async () => {
+    await expect(sut.getOne('invalid_id')).rejects.toThrow('Product not found');
+  });
 });

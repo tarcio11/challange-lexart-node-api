@@ -113,4 +113,26 @@ describe('Domain: Product', () => {
 
     expect(sut.toJSON().stock).toBe(20)
   })
+
+  it('should be able to return the product as a json', () => {
+    const createdAt = new Date()
+    const updatedAt = new Date()
+    const sut = new Product({
+      id: 'any_id',
+      name: 'any_name',
+      price: 10,
+      stock: 10,
+      createdAt,
+      updatedAt
+    })
+
+    expect(sut.toJSON()).toEqual({
+      id: 'any_id',
+      name: 'any_name',
+      price: 10,
+      stock: 10,
+      createdAt,
+      updatedAt
+    })
+  })
 });

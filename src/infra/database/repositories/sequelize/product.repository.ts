@@ -1,8 +1,15 @@
 import { Product } from "@/domain/entities/product";
 import { ProductModel } from "./models/product.model";
+import { ProductRepository } from "@/domain/contracts/repositories/product";
+import { ProductFakeBuilder } from "@/tests/domain/fakes/product-fake.builder";
 
-export class SequelizeProductRepository {
+export class SequelizeProductRepository implements ProductRepository {
   constructor(private categoryModel: typeof ProductModel) {}
+
+  async loadData (): Promise<void> {
+    const products = ProductFakeBuilder.theProducts(50).build();
+    await this.categoryModel.bulkCreate(products.map(product => product.toJSON()));
+  }
 
   async create (product: Product): Promise<void> {
     const data = product.toJSON()

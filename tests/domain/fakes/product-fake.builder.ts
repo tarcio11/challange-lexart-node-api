@@ -5,7 +5,7 @@ type PropOrFactory<T> = T | ((index: number) => T);
 
 export class ProductFakeBuilder<TBuild = any> {
   private _id: PropOrFactory<string> = (_index) => this.faker.string.uuid();
-  private _name: PropOrFactory<string> = (_index) => this.faker.internet.userName();
+  private _name: PropOrFactory<string> = (_index) => this.faker.commerce.productName();
   private _price: PropOrFactory<number> = (_index) => this.faker.number.float({ min: 0, max: 1000 });
   private _stock: PropOrFactory<number> = (_index) => this.faker.number.int({ min: 0, max: 1000 });
   private _created_at: PropOrFactory<Date> = (_index) => this.faker.date.recent();
@@ -17,7 +17,7 @@ export class ProductFakeBuilder<TBuild = any> {
     return new ProductFakeBuilder<Product>();
   }
 
-  static theCategories(countObjs: number) {
+  static theProducts(countObjs: number) {
     return new ProductFakeBuilder<Product[]>(countObjs);
   }
 

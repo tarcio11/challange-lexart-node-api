@@ -13,7 +13,6 @@ export type ProductModelProps = {
   stock: number
 };
 
-
 @Table({ tableName: 'products' })
 export class ProductModel extends Model<ProductModelProps> {
   @PrimaryKey

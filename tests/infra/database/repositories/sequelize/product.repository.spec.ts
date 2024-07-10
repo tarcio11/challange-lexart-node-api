@@ -181,4 +181,17 @@ describe('Repository: SequelizeProductRepository', () => {
       });
     })
   })
+
+  describe('loadData', () => {
+    it('should to be able load data', async () => {
+      await sut.loadData();
+
+      const result = await ProductModel.findAll();
+
+      console.log(result);
+
+
+      expect(result).toHaveLength(50);
+    });
+  });
 });

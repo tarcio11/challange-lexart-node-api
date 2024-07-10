@@ -1,0 +1,55 @@
+###
+# @name loadData
+POST http://localhost:3000/api/products/load
+Content-Type: application/json
+
+
+###
+# @name createCustomer
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+  "name": "NICOLAS LEVI",
+  "price": 100,
+  "stock": 10
+}
+
+
+###
+# @name getMany
+GET http://localhost:3000/api/products?page=1&perPage=5
+Content-Type: application/json
+
+###
+# @name searchProduct
+GET http://localhost:3000/api/products/search?page=1&perPage=5&name=Incredible
+Content-Type: application/json
+
+
+###
+# @name getOne
+GET http://localhost:3000/api/products/e7d2a367-6aca-46cd-8451-ea2abd5b47bf
+Content-Type: application/json
+
+###
+# @name updateProduct
+PUT http://localhost:3000/api/products/2b090402-927c-4150-88bc-152928bb05a1
+Content-Type: application/json
+
+{
+  "name": "NICOLAS LEVI",
+  "price": 100,
+  "stock": 10
+}
+
+###
+# @name deleteProduct
+DELETE http://localhost:3000/api/products/2b090402-927c-4150-88bc-152928bb05a1
+Content-Type: application/json
+
+###
+# @name deleteAllProduct
+DELETE http://localhost:3000/api/products
+Content-Type: application/json
+

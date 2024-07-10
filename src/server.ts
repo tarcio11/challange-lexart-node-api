@@ -1,9 +1,11 @@
-import express from "express";
-
-const app = express();
+import './main/config/module-alias'
+import { app } from "./main/config/app";
+import { sequelize } from './infra/database/repositories/config/database';
 
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
-app.listen(3000, () => { console.log("Server ready on port 3000."); });
+sequelize.sync().then(() => {
+  app.listen(3000, () => { console.log(`Server running at http://localhost: 3000`) })
+}).catch((error) => console.log(error));
 
 module.exports = app;

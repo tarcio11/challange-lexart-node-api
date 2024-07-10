@@ -8,9 +8,10 @@ type Model = Output
 
 export class SearchProductsController implements Controller {
   constructor(private readonly useCase: UseCase<Input, Model>) {}
-
   async execute(httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
     try {
+      console.log('httpRequest', httpRequest);
+
       const httpResponse = await this.useCase.execute(httpRequest)
       return ok(httpResponse)
     } catch (error) {

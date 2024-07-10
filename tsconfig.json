@@ -9,15 +9,16 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2022",
     "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./src",
+    "outDir": "dist",
+    "baseUrl": "src",
     "incremental": true,
     "strict": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@/*": ["*"],
-      "@/tests/*": ["../tests/*"]
-    }
+      "@/tests/*": ["../tests/*"],
+      "@/*": ["*"]
+    },
   }
 }

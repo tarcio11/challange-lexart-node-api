@@ -14,6 +14,8 @@ export class CreateProductController implements Controller {
       await this.useCase.execute(input)
       return created()
     } catch (error) {
+      console.log(error);
+
       return serverError()
     }
   }

@@ -2,6 +2,7 @@ import { mock, MockProxy } from 'jest-mock-extended'
 import { Product } from '@/domain/entities/product'
 import { ProductRepository } from '@/domain/contracts/repositories/product'
 import { GetManyProductsUseCase, Input } from '@/domain/use-cases/get-many-products.use-case'
+import { ProductFakeBuilder } from '../fakes/product-fake.builder'
 
 describe('UseCase: GetManyProducts', () => {
   let sut: GetManyProductsUseCase
@@ -43,14 +44,7 @@ describe('UseCase: GetManyProducts', () => {
   })
 
   it('should return product data on success', async () => {
-    const product = new Product({
-      id: 'any_id',
-      name: 'any_name',
-      price: 10,
-      stock: 10,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    })
+    const product = ProductFakeBuilder.aProduct().build()
 
     productRepository.getMany.mockResolvedValueOnce({ data: [product], total: 1 })
 

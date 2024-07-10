@@ -42,6 +42,10 @@ class Product {
     this.name = name
   }
 
+  changePrice (price: number): void {
+    this.price = price
+  }
+
   toJSON (): ProductModel {
     return {
       id: this.id,
@@ -128,6 +132,18 @@ describe('Domain: Product', () => {
     sut.changeName('new_name')
 
     expect(sut.toJSON().name).toBe('new_name')
+  })
+
+  it('should be able to update product price', () => {
+    const sut = new Product({
+      name: 'any_name',
+      price: 10,
+      stock: 10
+    })
+
+    sut.changePrice(20)
+
+    expect(sut.toJSON().price).toBe(20)
   })
 
   it('should be able to return the product as a json', () => {

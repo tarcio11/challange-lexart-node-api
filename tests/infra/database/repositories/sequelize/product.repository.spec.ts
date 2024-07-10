@@ -1,38 +1,17 @@
+import { setupSequelize } from "./helpers/setup-sequelize";
 import { Product } from "@/domain/entities/product";
-import {
-  Sequelize,
-  SequelizeOptions,
-} from 'sequelize-typescript';
 import { SequelizeProductRepository } from "@/infra/database/repositories/sequelize/product.repository";
 import { ProductModel } from "@/infra/database/repositories/sequelize/models/product.model";
-
-export function setupSequelize(options: SequelizeOptions = {}) {
-  let _sequelize: Sequelize;
-
-  beforeAll(async () => {
-    _sequelize = new Sequelize({
-      dialect: 'sqlite',
-      host: ':memory:',
-      logging: false,
-      models: options.models,
-    });
-  });
-
-  beforeEach(async () => await _sequelize.sync({ force: true }));
-
-  afterAll(async () => await _sequelize.close());
-
-  return {
-    get sequelize() {
-      return _sequelize;
-    },
-  };
-}
-
+import { ProductFakeBuilder } from "@/tests/domain/fakes/product-fake.builder";
 
 describe('Repository: SequelizeProductRepository', () => {
-  let sut: SequelizeProductRepository;
   setupSequelize({ models: [ProductModel] });
+  let sut: SequelizeProductRepository;
+  let product: Product;
+
+  beforeAll(() => {
+    product = ProductFakeBuilder.aProduct().build();
+  });
 
   beforeEach(async () => {
     sut = new SequelizeProductRepository(ProductModel);
@@ -40,22 +19,20 @@ describe('Repository: SequelizeProductRepository', () => {
 
   describe('create', () => {
     it('should to be able create a new product', async () => {
-      const product = Product.create({ name: 'any_name', price: 10, stock: 10 });
       await sut.create(product);
 
       const [result] = await ProductModel.findAll();
 
       expect(result.toJSON()).toEqual(expect.objectContaining({
-        name: 'any_name',
-        price: 10,
-        stock: 10,
+        name: product.toJSON().name,
+        price: product.toJSON().price,
+        stock: product.toJSON().stock,
       }));
     });
   });
 
   describe('getOne', () => {
     it('should to be able get a product by id', async () => {
-      const product = Product.create({ name: 'any_name', price: 10, stock: 10 });
       await sut.create(product);
       const [searched] = await ProductModel.findAll();
 
@@ -63,9 +40,9 @@ describe('Repository: SequelizeProductRepository', () => {
 
       expect(result.toJSON()).toEqual(expect.objectContaining({
         id: searched.id,
-        name: 'any_name',
-        price: 10,
-        stock: 10
+        name: product.toJSON().name,
+        price: product.toJSON().price,
+        stock: product.toJSON().stock,
       }));
     });
 
@@ -76,15 +53,16 @@ describe('Repository: SequelizeProductRepository', () => {
 
   describe('getMany', () => {
     it('should to be able get many products', async () => {
-      await sut.create(Product.create({ name: 'any_name', price: 10, stock: 10 }));
-      await sut.create(Product.create({ name: 'other_name', price: 20, stock: 20 }));
+      const products = ProductFakeBuilder.theProducts(2).build();
+      await sut.create(products[0]);
+      await sut.create(products[1]);
 
       const result = await sut.getMany({ perPage: 2, page: 1 });
 
       expect(result).toEqual({
         data: [
-          expect.objectContaining({ name: 'any_name', price: 10, stock: 10 }),
-          expect.objectContaining({ name: 'other_name', price: 20, stock: 20 }),
+          expect.objectContaining({ name: products[0].toJSON().name, price: products[0].toJSON().price, stock: products[0].toJSON().stock }),
+          expect.objectContaining({ name: products[1].toJSON().name, price: products[1].toJSON().price, stock: products[1].toJSON().stock }),
         ],
         total: 2,
       });
@@ -99,8 +77,7 @@ describe('Repository: SequelizeProductRepository', () => {
 
   describe('save', () => {
     it('should to be able update a product', async () => {
-      const instance = Product.create({ name: 'any_name', price: 10, stock: 10 });
-      await sut.create(instance);
+      await sut.create(ProductFakeBuilder.aProduct().build());
       const [searched] = await ProductModel.findAll();
       const product = await sut.getOne(searched.id);
       product.update({ name: 'new_name', price: 20, stock: 20 })
@@ -120,8 +97,7 @@ describe('Repository: SequelizeProductRepository', () => {
 
   describe('delete', () => {
     it('should to be able delete a product', async () => {
-      const instance = Product.create({ name: 'any_name', price: 10, stock: 10 });
-      await sut.create(instance);
+      await sut.create(product);
       const [searched] = await ProductModel.findAll();
 
       await sut.delete(searched.id);
@@ -134,10 +110,9 @@ describe('Repository: SequelizeProductRepository', () => {
 
   describe('deleteAll', () => {
     it('should to be able delete all products', async () => {
-      const instance1 = Product.create({ name: 'any_name', price: 10, stock: 10 });
-      const instance2 = Product.create({ name: 'other_name', price: 15, stock: 15 });
-      await sut.create(instance1);
-      await sut.create(instance2);
+      const products = ProductFakeBuilder.theProducts(2).build();
+      await sut.create(products[0]);
+      await sut.create(products[1]);
 
       await sut.deleteAll();
 
@@ -149,33 +124,31 @@ describe('Repository: SequelizeProductRepository', () => {
 
   describe('search', () => {
     it('should to be able search products by name', async () => {
-      const instance1 = Product.create({ name: 'any_name', price: 10, stock: 10 });
-      const instance2 = Product.create({ name: 'other_name', price: 15, stock: 15 });
-      await sut.create(instance1);
-      await sut.create(instance2);
+      const products = ProductFakeBuilder.theProducts(2).build();
+      await sut.create(products[0]);
+      await sut.create(products[1]);
 
-      const result = await sut.search({ perPage: 2, page: 1, name: 'any_name' });
+      const result = await sut.search({ perPage: 2, page: 1, name: products[0].toJSON().name });
 
       expect(result).toEqual({
         data: [
-          expect.objectContaining({ name: 'any_name', price: 10, stock: 10 }),
+          expect.objectContaining({ name: products[0].toJSON().name, price: products[0].toJSON().price, stock: products[0].toJSON().stock }),
         ],
         total: 1,
       });
     })
 
     it('should to be able search products by id', async () => {
-      const instance1 = Product.create({ name: 'any_name', price: 10, stock: 10 });
-      const instance2 = Product.create({ name: 'other_name', price: 15, stock: 15 });
-      await sut.create(instance1);
-      await sut.create(instance2);
+      const products = ProductFakeBuilder.theProducts(2).build();
+      await sut.create(products[0]);
+      await sut.create(products[1]);
       const [searched] = await ProductModel.findAll();
 
       const result = await sut.search({ perPage: 2, page: 1, id: searched.id });
 
       expect(result).toEqual({
         data: [
-          expect.objectContaining({ name: 'any_name', price: 10, stock: 10 }),
+          expect.objectContaining({ name: products[0].toJSON().name, price: products[0].toJSON().price, stock: products[0].toJSON().stock }),
         ],
         total: 1,
       });
@@ -187,9 +160,6 @@ describe('Repository: SequelizeProductRepository', () => {
       await sut.loadData();
 
       const result = await ProductModel.findAll();
-
-      console.log(result);
-
 
       expect(result).toHaveLength(50);
     });

@@ -43,4 +43,12 @@ describe('UseCase: CreateProduct', () => {
     expect(productRepository.create).toHaveBeenCalledWith(...mocked(Product).mock.instances)
     expect(productRepository.create).toHaveBeenCalledTimes(1)
   })
+
+  it('should rethrow if ProductRepository.create throws', async () => {
+    productRepository.create.mockRejectedValueOnce(new Error('any_repository_error'))
+
+    const promise = sut.execute(input)
+
+    await expect(promise).rejects.toThrow(new Error('any_repository_error'))
+  })
 })

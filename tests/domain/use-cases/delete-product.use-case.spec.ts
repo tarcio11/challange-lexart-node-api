@@ -1,15 +1,6 @@
 import { mock, MockProxy } from 'jest-mock-extended'
 import { ProductRepository } from '@/domain/contracts/repositories/product'
-
-interface Input { id: string }
-
-export class DeleteProductUseCase {
-  constructor(private readonly productRepository: ProductRepository) {}
-
-  async execute(input: Input) {
-    await this.productRepository.delete(input.id)
-  }
-}
+import { DeleteProductUseCase, Input } from '@/domain/use-cases/delete-product.use-case'
 
 describe('UseCase: DeleteProduct', () => {
   let sut: DeleteProductUseCase

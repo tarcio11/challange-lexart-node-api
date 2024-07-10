@@ -1,25 +1,8 @@
-import { MockProxy, mock } from 'jest-mock-extended'
 import { mocked } from 'jest-mock'
+import { MockProxy, mock } from 'jest-mock-extended'
 import { Product } from "@/domain/entities/product"
-
-interface ProductRepository {
-  create: (product: Product) => Promise<void>
-}
-
-type Input = {
-  name: string
-  price: number
-  stock: number
-}
-
-class CreateProductUseCase {
-  constructor(private readonly productRepository: ProductRepository) {}
-
-  async execute(input: Input): Promise<void> {
-    const instance = new Product(input)
-    await this.productRepository.create(instance)
-  }
-}
+import { CreateProductUseCase, Input } from '@/domain/use-cases/create-product.use-case'
+import { ProductRepository } from '@/domain/contracts/repositories/product'
 
 jest.mock('@/domain/entities/product')
 

@@ -34,16 +34,22 @@ export class Product {
     return new Product(command)
   }
 
-  changeStock (stock: number): void {
-    this.stock = stock
+  changeStock (stock?: number): void {
+    if(stock) this.stock = stock
   }
 
-  changeName (name: string): void {
-    this.name = name
+  changeName (name?: string): void {
+    if (name) this.name = name
   }
 
-  changePrice (price: number): void {
-    this.price = price
+  changePrice (price?: number): void {
+    if (price) this.price = price
+  }
+
+  update (props: Partial<CreateCommand>): void {
+    this.changeName(props.name)
+    this.changePrice(props.price)
+    this.changeStock(props.stock)
   }
 
   toJSON (): ProductModel {

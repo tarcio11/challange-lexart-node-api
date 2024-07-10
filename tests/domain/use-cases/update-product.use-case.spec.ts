@@ -1,15 +1,22 @@
-import { ProductRepository } from '@/domain/contracts/repositories/product'
+import { mocked } from 'jest-mock'
 import { mock, MockProxy } from 'jest-mock-extended'
+import { ProductRepository } from '@/domain/contracts/repositories/product'
+import { Product } from '@/domain/entities/product'
 
 export type Input = {
   id: string
+  name?: string
+  price?: number
+  stock?: number
 }
 
 export class UpdateProductUseCase {
   constructor(private readonly productRepository: ProductRepository) {}
 
   async execute(input: Input) {
-    await this.productRepository.getOne(input.id)
+    const product = await this.productRepository.getOne(input.id)
+    product.update(input)
+    await this.productRepository.save(product)
   }
 }
 
@@ -17,10 +24,20 @@ describe('UseCase: UpdateProduct', () => {
   let sut: UpdateProductUseCase
   let productRepository: MockProxy<ProductRepository>
   let input: Input
+  let product: Product
 
   beforeAll(() => {
-    input = { id: 'any_id' }
+    input = { id: 'any_id', name: 'new_name', price: 20, stock: 20 }
+    product = new Product({
+      id: 'any_id',
+      name: 'any_name',
+      price: 10,
+      stock: 10,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
     productRepository = mock()
+    productRepository.getOne.mockResolvedValue(product)
   })
 
   beforeEach(() => {
@@ -40,5 +57,12 @@ describe('UseCase: UpdateProduct', () => {
     const promise = sut.execute(input)
 
     await expect(promise).rejects.toThrow(new Error('any_repository_error'))
+  })
+
+  it('should call Product.save with correct input', async () => {
+    await sut.execute(input)
+
+    expect(productRepository.save).toHaveBeenCalledWith(product)
+    expect(productRepository.save).toHaveBeenCalledTimes(1)
   })
 })

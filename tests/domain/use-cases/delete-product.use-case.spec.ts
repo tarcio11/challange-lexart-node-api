@@ -31,4 +31,12 @@ describe('UseCase: DeleteProduct', () => {
     expect(productRepository.delete).toHaveBeenCalledWith(input.id)
     expect(productRepository.delete).toHaveBeenCalledTimes(1)
   })
+
+  it('should rethrow if ProductRepository.delete throws', async () => {
+    productRepository.delete.mockRejectedValueOnce(new Error('any_repository_error'))
+
+    const promise = sut.execute(input)
+
+    await expect(promise).rejects.toThrow(new Error('any_repository_error'))
+  })
 })

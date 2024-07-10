@@ -1,5 +1,6 @@
 import { MockProxy, mock } from 'jest-mock-extended'
 import { ProductRepository } from '@/domain/contracts/repositories/product'
+import { Product } from '@/domain/entities/product'
 
 type Input = { id: string }
 
@@ -7,7 +8,8 @@ class GetProductUseCase {
   constructor(private readonly productRepository: ProductRepository) {}
 
   async execute(input: Input) {
-    await this.productRepository.getOne(input.id)
+    const product = await this.productRepository.getOne(input.id)
+    return product.toJSON()
   }
 }
 
@@ -15,10 +17,22 @@ describe('UseCase: GetProduct', () => {
   let sut: GetProductUseCase
   let productRepository: MockProxy<ProductRepository>
   let input: Input
+  let createdAt: Date
+  let updatedAt: Date
 
   beforeAll(() => {
     input = { id: 'any_id' }
+    createdAt = new Date()
+    updatedAt = new Date()
     productRepository = mock()
+    productRepository.getOne.mockResolvedValue(new Product({
+      id: 'any_id',
+      name: 'any_name',
+      price: 10,
+      stock: 10,
+      createdAt,
+      updatedAt
+    }))
    })
 
   beforeEach(() => {
@@ -38,5 +52,18 @@ describe('UseCase: GetProduct', () => {
     const promise = sut.execute(input)
 
     await expect(promise).rejects.toThrow(new Error('any_repository_error'))
+  })
+
+  it('should return product data on success', async () => {
+    const product = await sut.execute(input)
+
+    expect(product).toEqual({
+      id: 'any_id',
+      name: 'any_name',
+      price: 10,
+      stock: 10,
+      createdAt,
+      updatedAt
+    })
   })
 })

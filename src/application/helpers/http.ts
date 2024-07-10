@@ -10,6 +10,11 @@ export const created = (): HttpResponse => ({
   data: null
 })
 
+export const noContent = (): HttpResponse => ({
+  statusCode: 204,
+  data: null
+})
+
 export const serverError = (): HttpResponse => ({
   statusCode: 500,
   data: new InternalServerError()

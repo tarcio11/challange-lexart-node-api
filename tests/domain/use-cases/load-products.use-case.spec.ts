@@ -1,13 +1,6 @@
 import { mock, MockProxy } from 'jest-mock-extended'
 import { ProductRepository } from '@/domain/contracts/repositories/product'
-
-export class LoadProductsUseCase {
-  constructor(private readonly productRepository: ProductRepository) {}
-
-  async execute() {
-    await this.productRepository.loadData()
-  }
-}
+import { LoadProductsUseCase } from '@/domain/use-cases/load-products.use-case'
 
 describe('UseCase: LoadProducts', () => {
   let sut: LoadProductsUseCase

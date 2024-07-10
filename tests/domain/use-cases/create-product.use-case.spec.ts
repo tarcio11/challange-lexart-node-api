@@ -26,19 +26,19 @@ jest.mock('@/domain/entities/product')
 describe('UseCase: CreateProduct', () => {
   let sut: CreateProductUseCase
   let productRepository: MockProxy<ProductRepository>
+  let input: Input
 
-  beforeAll(() => { productRepository = mock() })
+  beforeAll(() => {
+    input = { name: 'any_name', price: 10, stock: 10 }
+    productRepository = mock()
+   })
 
   beforeEach(() => {
     sut = new CreateProductUseCase(productRepository)
   })
 
   it('should call ProductRepository.create with correct input', async () => {
-    await sut.execute({
-      name: 'any_name',
-      price: 10,
-      stock: 10
-    })
+    await sut.execute(input)
 
     expect(productRepository.create).toHaveBeenCalledWith(...mocked(Product).mock.instances)
     expect(productRepository.create).toHaveBeenCalledTimes(1)

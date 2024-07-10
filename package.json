@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server.ts",
   "scripts": {
+    "build": "rimraf dist && npx tsc",
     "start:dev": "cross-env NODE_ENV=development ts-node src/server.ts",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm t -- --watch",
@@ -21,6 +22,7 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "module-alias": "^2.2.3",
+    "rimraf": "^6.0.1",
     "sequelize": "^6.37.3",
     "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.1.7"

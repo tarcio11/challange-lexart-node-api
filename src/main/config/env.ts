@@ -1,4 +1,5 @@
 export const env = {
+  jwtSecret: process.env.JWT_SECRET || 'secret',
   database: {
     host: process.env.POSTGRES_HOST || '',
     url: process.env.POSTGRES_URL || '',

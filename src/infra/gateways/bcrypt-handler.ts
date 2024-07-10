@@ -1,5 +1,5 @@
 import { hash, compare } from 'bcrypt';
-import { HasherGenerator } from "@/domain/contracts/gateways/hash"
+import { HasherGenerator } from "../../domain/contracts/gateways/hash";
 
 export class BcryptHandler implements HasherGenerator {
   async hash(plaintext: string): Promise<string> {

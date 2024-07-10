@@ -31,4 +31,12 @@ describe('UseCase: SearchProducts', () => {
     expect(productRepository.search).toHaveBeenCalledWith(input)
     expect(productRepository.search).toHaveBeenCalledTimes(1)
   })
+
+  it('should rethrow if ProductRepository.search throws', async () => {
+    productRepository.search.mockRejectedValueOnce(new Error('any_repository_error'))
+
+    const promise = sut.execute(input)
+
+    await expect(promise).rejects.toThrow(new Error('any_repository_error'))
+  })
 })

@@ -1,4 +1,4 @@
-import { ProductRepository } from '@/domain/contracts/repositories/product'
+import { ProductRepository } from '../../domain/contracts/repositories/product'
 import { UseCase } from './use-case'
 
 export type Input = { id: string }

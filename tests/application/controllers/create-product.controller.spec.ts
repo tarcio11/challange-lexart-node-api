@@ -1,7 +1,7 @@
 import { mock, MockProxy } from "jest-mock-extended";
-import { UseCase } from "@/domain/use-cases/use-case";
-import { CreateProductController } from "@/application/controllers/create-product.controller";
-import { serverError } from "@/application/helpers/http";
+import { UseCase } from "../../../src/domain/use-cases/use-case";
+import { CreateProductController } from "../../../src/application/controllers/create-product.controller";
+import { serverError } from "../../../src/application/helpers/http";
 
 describe('Controllers: CreateProductController', () => {
   let sut: CreateProductController

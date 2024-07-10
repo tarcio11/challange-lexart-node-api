@@ -1,7 +1,7 @@
-import { UseCase } from "@/domain/use-cases/use-case";
+import { UseCase } from "../../domain/use-cases/use-case";
 import { Controller } from "./controller";
 import { HttpResponse, ok, serverError } from "../helpers/http";
-import { Input, Output } from "@/domain/use-cases/get-many-products.use-case";
+import { Input, Output } from "../../domain/use-cases/get-many-products.use-case";
 
 type HttpRequest = Input
 type Model = Output

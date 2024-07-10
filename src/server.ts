@@ -1,4 +1,3 @@
-import './main/config/module-alias'
 import { app } from "./main/config/app";
 import { sequelize } from './infra/database/repositories/config/database';
 

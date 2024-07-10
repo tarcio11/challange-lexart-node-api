@@ -1,4 +1,4 @@
-import { UseCase } from "@/domain/use-cases/use-case";
+import { UseCase } from "../../domain/use-cases/use-case";
 import { Controller } from "./controller";
 import { HttpResponse, noContent, serverError } from "../helpers/http";
 

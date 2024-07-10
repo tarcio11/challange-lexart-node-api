@@ -1,6 +1,6 @@
 import { mock, MockProxy } from 'jest-mock-extended'
-import { ProductRepository } from '@/domain/contracts/repositories/product'
-import { DeleteAllProductsUseCase } from '@/domain/use-cases/delete-all-products.use-case'
+import { ProductRepository } from '../../../src/domain/contracts/repositories/product'
+import { DeleteAllProductsUseCase } from '../../../src/domain/use-cases/delete-all-products.use-case'
 
 describe('UseCase: DeleteAllProducts', () => {
   let sut: DeleteAllProductsUseCase

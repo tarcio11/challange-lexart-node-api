@@ -1,6 +1,6 @@
 import { UseCase } from './use-case'
-import { ProductRepository } from '@/domain/contracts/repositories/product'
-import { ProductModel } from '@/domain/entities/product'
+import { ProductRepository } from '../../domain/contracts/repositories/product'
+import { ProductModel } from '../../domain/entities/product'
 
 export type Input = { id: string }
 export type Output = ProductModel

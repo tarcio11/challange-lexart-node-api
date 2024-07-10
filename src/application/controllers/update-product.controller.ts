@@ -1,7 +1,7 @@
-import { UseCase } from "@/domain/use-cases/use-case";
+import { UseCase } from "../../domain/use-cases/use-case";
 import { Controller } from "./controller";
-import { HttpResponse, noContent, serverError } from "@/application/helpers/http";
-import { Input } from "@/domain/use-cases/update-product.use-case";
+import { HttpResponse, noContent, serverError } from "../../application/helpers/http";
+import { Input } from "../../domain/use-cases/update-product.use-case";
 
 type HttpRequest = Input
 type Model = void

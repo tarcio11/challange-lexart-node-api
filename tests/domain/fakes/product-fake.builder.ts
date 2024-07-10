@@ -1,5 +1,5 @@
 import { faker, Faker } from '@faker-js/faker';
-import { Product } from '@/domain/entities/product';
+import { Product } from '../../../src/domain/entities/product';
 
 type PropOrFactory<T> = T | ((index: number) => T);
 

@@ -1,8 +1,8 @@
 import { setupSequelize } from "./helpers/setup-sequelize";
-import { Product } from "@/domain/entities/product";
-import { SequelizeProductRepository } from "@/infra/database/repositories/sequelize/product.repository";
-import { ProductModel } from "@/infra/database/repositories/sequelize/models/product.model";
-import { ProductFakeBuilder } from "@/tests/domain/fakes/product-fake.builder";
+import { Product } from "../../../../../src/domain/entities/product";
+import { ProductModel } from "../../../../../src/infra/database/repositories/sequelize/models/product.model";
+import { ProductFakeBuilder } from "../../../../domain/fakes/product-fake.builder";
+import { SequelizeProductRepository } from "../../../../../src/infra/database/repositories/sequelize/product.repository";
 
 describe('Repository: SequelizeProductRepository', () => {
   setupSequelize({ models: [ProductModel] });

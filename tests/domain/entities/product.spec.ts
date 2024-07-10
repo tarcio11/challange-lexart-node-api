@@ -1,4 +1,4 @@
-import { Product } from '@/domain/entities/product'
+import { Product } from '../../../src/domain/entities/product'
 
 describe('Domain: Product', () => {
   it('should be able to create a new product with a required fields', () => {

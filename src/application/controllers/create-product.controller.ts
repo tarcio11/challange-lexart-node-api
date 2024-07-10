@@ -1,6 +1,6 @@
-import { UseCase } from "@/domain/use-cases/use-case";
+import { UseCase } from "../../domain/use-cases/use-case";
 import { Controller } from "./controller";
-import { Input } from "@/domain/use-cases/create-product.use-case";
+import { Input } from "../../domain/use-cases/create-product.use-case";
 import { created, HttpResponse, serverError } from "../helpers/http";
 
 type HttpRequest = Input

@@ -1,4 +1,4 @@
-import { InternalServerError } from "@/application/errors/internal-server-error"
+import { InternalServerError } from "../../application/errors/internal-server-error"
 
 export type HttpResponse<T = any> = {
   statusCode: number

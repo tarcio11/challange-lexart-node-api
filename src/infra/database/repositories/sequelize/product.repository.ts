@@ -1,7 +1,7 @@
-import { Product } from "@/domain/entities/product";
 import { ProductModel } from "./models/product.model";
-import { ProductRepository } from "@/domain/contracts/repositories/product";
-import { ProductFakeBuilder } from "@/tests/domain/fakes/product-fake.builder";
+import { Product } from "../../../../domain/entities/product";
+import { ProductRepository } from "../../../../domain/contracts/repositories/product";
+import { ProductFakeBuilder } from "../../../../../tests/domain/fakes/product-fake.builder";
 
 export class SequelizeProductRepository implements ProductRepository {
   constructor(private categoryModel: typeof ProductModel) {}

@@ -1,5 +1,5 @@
-import { adaptExpressRoute } from '@/main/adapters/express-router'
-import { ProductControllerFactory } from '@/main/factory/product-controller.factory'
+import { adaptExpressRoute } from '../../main/adapters/express-router'
+import { ProductControllerFactory } from '../../main/factory/product-controller.factory'
 
 import { Router } from 'express'
 

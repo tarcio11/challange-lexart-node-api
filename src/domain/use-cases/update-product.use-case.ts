@@ -1,5 +1,5 @@
 import { UseCase } from './use-case'
-import { ProductRepository } from '@/domain/contracts/repositories/product'
+import { ProductRepository } from '../../domain/contracts/repositories/product'
 
 export type Input = {
   id: string

@@ -1,7 +1,7 @@
 import { mock, MockProxy } from 'jest-mock-extended'
-import { ProductRepository } from '@/domain/contracts/repositories/product'
-import { Product } from '@/domain/entities/product'
-import { SearchProductsUseCase, Input } from '@/domain/use-cases/search-products.use-case'
+import { ProductRepository } from '../../../src/domain/contracts/repositories/product'
+import { Product } from '../../../src/domain/entities/product'
+import { SearchProductsUseCase, Input } from '../../../src/domain/use-cases/search-products.use-case'
 
 describe('UseCase: SearchProducts', () => {
   let sut: SearchProductsUseCase

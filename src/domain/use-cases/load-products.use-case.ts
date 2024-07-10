@@ -1,4 +1,4 @@
-import { ProductRepository } from '@/domain/contracts/repositories/product'
+import { ProductRepository } from '../../domain/contracts/repositories/product'
 import { UseCase } from './use-case'
 
 export class LoadProductsUseCase implements UseCase<void, void> {

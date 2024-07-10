@@ -1,20 +1,7 @@
 import { mock, MockProxy } from 'jest-mock-extended'
 import { ProductRepository } from '@/domain/contracts/repositories/product'
 import { Product } from '@/domain/entities/product'
-
-type Input = { perPage: number, page: number, id?: string, name?: string }
-
-export class SearchProductsUseCase {
-  constructor(private readonly productRepository: ProductRepository) {}
-
-  async execute(input: Input) {
-    const result = await this.productRepository.search(input)
-    return {
-      data: result.data.map(product => product.toJSON()),
-      total: result.total
-    }
-  }
-}
+import { SearchProductsUseCase, Input } from '@/domain/use-cases/search-products.use-case'
 
 describe('UseCase: SearchProducts', () => {
   let sut: SearchProductsUseCase

@@ -1,5 +1,5 @@
 import { addAlias } from 'module-alias'
 import { resolve } from 'path'
 
-addAlias('@', resolve('src'))
+addAlias('@', resolve(process.env.NODE_ENV ? 'src' : 'dist'))
 addAlias('@/tests', resolve('tests'))

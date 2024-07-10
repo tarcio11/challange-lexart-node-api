@@ -10,6 +10,7 @@ import {
 } from 'sequelize-typescript';
 
 export type ProductModelProps = {
+  id?: string
   name: string
   price: number
   stock: number
@@ -67,6 +68,15 @@ export class SequelizeProductRepository {
       data: rows.map(row => new Product(row.toJSON())),
       total: count,
     };
+  }
+
+  async save (product: Product): Promise<void> {
+    const data = product.toJSON();
+    await this.categoryModel.update({
+      name: data.name,
+      price: data.price,
+      stock: data.stock,
+    }, { where: { id: data.id } });
   }
 }
 
@@ -159,5 +169,26 @@ describe('Repository: SequelizeProductRepository', () => {
     const result = await sut.getMany({ perPage: 2, page: 1 });
 
     expect(result).toEqual({ data: [], total: 0 });
+  });
+
+  describe('save', () => {
+    it('should to be able update a product', async () => {
+      const instance = Product.create({ name: 'any_name', price: 10, stock: 10 });
+      await sut.create(instance);
+      const [searched] = await ProductModel.findAll();
+      const product = await sut.getOne(searched.id);
+      product.update({ name: 'new_name', price: 20, stock: 20 })
+
+      await sut.save(product);
+
+      const [result] = await ProductModel.findAll();
+
+      expect(result.toJSON()).toEqual(expect.objectContaining({
+        id: searched.id,
+        name: 'new_name',
+        price: 20,
+        stock: 20,
+      }));
+    });
   });
 });

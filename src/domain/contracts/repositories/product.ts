@@ -5,4 +5,5 @@ export interface ProductRepository {
   getOne: (id: string) => Promise<Product>
   getMany: (options: { perPage: number, page: number }) => Promise<{ data: Product[], total: number }>
   save: (product: Product) => Promise<void>
+  delete: (id: string) => Promise<void>
 }

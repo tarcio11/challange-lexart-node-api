@@ -1,3 +1,4 @@
+require('dotenv').config()
 import { app } from "./main/config/app";
 import { sequelize } from './infra/database/repositories/config/database';
 

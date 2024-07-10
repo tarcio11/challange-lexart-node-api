@@ -5,12 +5,6 @@
       "use": "@vercel/node"
     }
   ],
-  "functions": {
-    "api/*.ts": {
-      "runtime": "vercel-node@18.x",
-      "handler": "dist/main/server.js"
-    }
-  },
   "routes": [
     {
       "src": "/(.*)",

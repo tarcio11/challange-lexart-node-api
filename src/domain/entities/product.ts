@@ -3,6 +3,7 @@ export type ProductModel = {
   name: string
   price: number
   stock: number
+  isExternal?: boolean
   createdAt?: Date
   updatedAt?: Date
 }
@@ -11,6 +12,7 @@ type CreateCommand = {
   name: string
   price: number
   stock: number
+  isExternal?: boolean
 }
 
 export class Product {
@@ -18,6 +20,7 @@ export class Product {
   private name: string
   private price: number
   private stock: number
+  private isExternal?: boolean
   private createdAt?: Date
   private updatedAt?: Date
 
@@ -26,6 +29,7 @@ export class Product {
     this.name = props.name
     this.price = props.price
     this.stock = props.stock
+    this.isExternal = props.isExternal ?? false
     this.createdAt = props.createdAt
     this.updatedAt = props.updatedAt
   }
@@ -58,6 +62,7 @@ export class Product {
       name: this.name,
       price: this.price,
       stock: this.stock,
+      isExternal: this.isExternal,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     }

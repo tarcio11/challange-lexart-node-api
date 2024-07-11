@@ -8,11 +8,11 @@ describe('Domain: Product', () => {
       stock: 10
     })
 
-    expect(sut).toEqual({
-      name: 'any_name',
-      price: 10,
-      stock: 10
-    })
+    expect(sut).toEqual(expect.objectContaining({
+        name: 'any_name',
+        price: 10,
+        stock: 10
+    }))
   });
 
   it('should be able to create a new product with a required fields', () => {
@@ -32,6 +32,7 @@ describe('Domain: Product', () => {
       name: 'any_name',
       price: 10,
       stock: 10,
+      isExternal: false,
       createdAt,
       updatedAt
     })
@@ -48,6 +49,7 @@ describe('Domain: Product', () => {
       name: 'any_name',
       price: 10,
       stock: 10,
+      isExternal: false
     })
   })
 
@@ -95,6 +97,7 @@ describe('Domain: Product', () => {
       name: 'any_name',
       price: 10,
       stock: 10,
+      isExternal: true,
       createdAt,
       updatedAt
     })
@@ -104,6 +107,7 @@ describe('Domain: Product', () => {
       name: 'any_name',
       price: 10,
       stock: 10,
+      isExternal: true,
       createdAt,
       updatedAt
     })

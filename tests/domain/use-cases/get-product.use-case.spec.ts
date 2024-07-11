@@ -52,6 +52,7 @@ describe('UseCase: GetProduct', () => {
       name: 'any_name',
       price: 10,
       stock: 10,
+      isExternal: false,
       createdAt,
       updatedAt
     })

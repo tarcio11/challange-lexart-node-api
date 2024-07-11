@@ -4,31 +4,32 @@ import { ProductRepository } from "../../../../domain/contracts/repositories/pro
 import { ProductFakeBuilder } from "../../../../../tests/domain/fakes/product-fake.builder";
 
 export class SequelizeProductRepository implements ProductRepository {
-  constructor(private categoryModel: typeof ProductModel) {}
+  constructor(private productModel: typeof ProductModel) {}
 
   async loadData (): Promise<void> {
     const products = ProductFakeBuilder.theProducts(50).build();
-    await this.categoryModel.bulkCreate(products.map(product => product.toJSON()));
+    await this.productModel.bulkCreate(products.map(product => product.toJSON()));
   }
 
   async create (product: Product): Promise<void> {
     const data = product.toJSON()
-    await this.categoryModel.create({
+    await this.productModel.create({
       name: data.name,
       price: data.price,
       stock: data.stock,
+      isExternal: data.isExternal,
     });
   }
 
   async getOne (id: string): Promise<Product> {
-    const product = await this.categoryModel.findByPk(id);
+    const product = await this.productModel.findByPk(id);
     if (!product) throw new Error('Product not found');
     return Product.create(product.toJSON());
   }
 
   async getMany (options: { perPage: number, page: number }): Promise<{ data: Product[], total: number }> {
     const { perPage, page } = options;
-    const { count, rows } = await this.categoryModel.findAndCountAll({
+    const { count, rows } = await this.productModel.findAndCountAll({
       limit: perPage,
       offset: (page - 1) * perPage,
     });
@@ -41,7 +42,7 @@ export class SequelizeProductRepository implements ProductRepository {
 
   async save (product: Product): Promise<void> {
     const data = product.toJSON();
-    await this.categoryModel.update({
+    await this.productModel.update({
       name: data.name,
       price: data.price,
       stock: data.stock,
@@ -49,17 +50,17 @@ export class SequelizeProductRepository implements ProductRepository {
   }
 
   async delete (id: string): Promise<void> {
-    await this.categoryModel.destroy({ where: { id } });
+    await this.productModel.destroy({ where: { id } });
   }
 
   async deleteAll (): Promise<void> {
-    await this.categoryModel.destroy({ truncate: true });
+    await this.productModel.destroy({ truncate: true });
   }
 
-  async search (options: { perPage: number, page: number, id?: string, name?: string }): Promise<{ data: Product[], total: number }> {
+  async search (options: { perPage: number, page: number, id?: string, name?: string, external?: boolean }): Promise<{ data: Product[], total: number }> {
     const { perPage, page, id, name } = options;
-    const where = { ...(id && { id }), ...(name && { name }) };
-    const { count, rows } = await this.categoryModel.findAndCountAll({
+    const where = { ...(id && { id }), ...(name && { name }), ...(options.external && { isExternal: true }) };
+    const { count, rows } = await this.productModel.findAndCountAll({
       where,
       limit: perPage,
       offset: (page - 1) * perPage,

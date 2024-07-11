@@ -11,6 +11,7 @@ export type ProductModelProps = {
   name: string
   price: number
   stock: number
+  isExternal?: boolean
 };
 
 @Table({ tableName: 'products' })
@@ -27,6 +28,9 @@ export class ProductModel extends Model<ProductModelProps> {
 
   @Column({ allowNull: false, type: DataType.INTEGER })
   declare stock: number;
+
+  @Column({ allowNull: false, type: DataType.BOOLEAN, field: 'is_external', defaultValue: false })
+  declare isExternal: boolean;
 
   @Column({ allowNull: false, type: DataType.DATE(3), field: 'created_at', defaultValue: DataType.NOW })
   declare createdAt: Date;

@@ -8,6 +8,7 @@ export class ProductFakeBuilder<TBuild = any> {
   private _name: PropOrFactory<string> = (_index) => this.faker.commerce.productName();
   private _price: PropOrFactory<number> = (_index) => this.faker.number.float({ min: 0, max: 1000 });
   private _stock: PropOrFactory<number> = (_index) => this.faker.number.int({ min: 0, max: 1000 });
+  private _isExternal: PropOrFactory<boolean> = (_index) => false;
   private _created_at: PropOrFactory<Date> = (_index) => this.faker.date.recent();
   private _updated_at: PropOrFactory<Date> = (_index) => this.faker.date.recent();
 
@@ -38,8 +39,18 @@ export class ProductFakeBuilder<TBuild = any> {
     return this;
   }
 
-  withDescription(valueOrFactory: PropOrFactory<number>) {
+  withPrice(valueOrFactory: PropOrFactory<number>) {
     this._price = valueOrFactory;
+    return this;
+  }
+
+  withStock(valueOrFactory: PropOrFactory<number>) {
+    this._stock = valueOrFactory;
+    return this;
+  }
+
+  withIsExternal(valueOrFactory: PropOrFactory<boolean>) {
+    this._isExternal = valueOrFactory;
     return this;
   }
 
@@ -69,6 +80,7 @@ export class ProductFakeBuilder<TBuild = any> {
           ...(this._updated_at && {
             updated_at: this.callFactory(this._updated_at, index),
           }),
+          ...(this._isExternal && { isExternal: this.callFactory(this._isExternal, index) }),
         });
         return product;
       });
@@ -91,6 +103,10 @@ export class ProductFakeBuilder<TBuild = any> {
     return this.getValue('stock');
   }
 
+  get isExternal() {
+    return this.getValue('isExternal');
+  }
+
   get createdAt() {
     return this.getValue('created_at');
   }
@@ -100,7 +116,7 @@ export class ProductFakeBuilder<TBuild = any> {
   }
 
   private getValue(prop: any) {
-    const optional = ['id', 'created_at', 'updated_at'];
+    const optional = ['id', 'created_at', 'updated_at', 'isExternal'];
     const privateProp = `_${prop}` as keyof this;
     if (!this[privateProp] && optional.includes(prop)) {
       throw new Error(

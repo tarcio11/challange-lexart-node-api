@@ -18,6 +18,7 @@ import { SearchProductsUseCase } from '../../domain/use-cases/search-products.us
 import { UpdateProductUseCase } from '../../domain/use-cases/update-product.use-case'
 import { ProductModel } from '../../infra/database/repositories/sequelize/models/product.model'
 import { SequelizeProductRepository } from '../../infra/database/repositories/sequelize/product.repository'
+import { CreateExternalProductController } from '../../application/controllers/create-external-product.controller'
 
 export class ProductControllerFactory {
   static makeCreateProductController (): Controller {
@@ -72,5 +73,11 @@ export class ProductControllerFactory {
     const makeProductSequelizeRepository = new SequelizeProductRepository(ProductModel)
     const makeProductUseCase = new SearchProductsUseCase(makeProductSequelizeRepository)
     return new GetExternalProductsController(makeProductUseCase)
+  }
+
+  static makeCreateExternalProductController (): Controller {
+    const makeProductSequelizeRepository = new SequelizeProductRepository(ProductModel)
+    const makeProductUseCase = new CreateProductUseCase(makeProductSequelizeRepository)
+    return new CreateExternalProductController(makeProductUseCase)
   }
 }

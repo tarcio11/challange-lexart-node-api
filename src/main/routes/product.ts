@@ -1,11 +1,12 @@
 import { adaptExpressRoute } from '../../main/adapters/express-router'
 import { ProductControllerFactory } from '../../main/factory/product-controller.factory'
+import { auth } from '../middlewares/authentication'
 
 import { Router } from 'express'
 
 export default (router: Router): void => {
-  router.post('/api/products', adaptExpressRoute(ProductControllerFactory.makeCreateProductController()))
-  router.get('/api/products', adaptExpressRoute(ProductControllerFactory.makeGetManyProductsController()))
+  router.post('/api/products', auth, adaptExpressRoute(ProductControllerFactory.makeCreateProductController()))
+  router.get('/api/products', auth, adaptExpressRoute(ProductControllerFactory.makeGetManyProductsController()))
   router.get('/api/products/search', adaptExpressRoute(ProductControllerFactory.makeSearchProductsController()))
   router.get('/api/products/:id', adaptExpressRoute(ProductControllerFactory.makeGetProductController()))
   router.put('/api/products/:id', adaptExpressRoute(ProductControllerFactory.makeUpdateProductController()))

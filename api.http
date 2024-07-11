@@ -5,7 +5,7 @@ Content-Type: application/json
 
 
 ###
-# @name createCustomer
+# @name createProduct
 POST http://localhost:3000/api/products
 Content-Type: application/json
 

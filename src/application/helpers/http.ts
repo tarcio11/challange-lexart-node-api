@@ -1,4 +1,4 @@
-import { InternalServerError } from "../../application/errors/internal-server-error"
+import { InternalServerError, ForbiddenError } from "../../application/errors/http"
 
 export type HttpResponse<T = any> = {
   statusCode: number
@@ -30,7 +30,7 @@ export const notFound = (error: Error): HttpResponse => ({
   data: error
 })
 
-export const forbidden = (error?: Error): HttpResponse => ({
+export const forbidden = (): HttpResponse => ({
   statusCode: 403,
-  data: error
+  data: new ForbiddenError()
 })

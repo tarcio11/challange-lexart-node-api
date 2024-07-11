@@ -7,7 +7,7 @@ describe('AuthenticationMiddleware', () => {
   let authorization: string
 
   beforeAll(() => {
-    authorization = 'any_authorization_token'
+    authorization = 'bearer any_authorization_token'
     authorize = jest.fn().mockResolvedValue('any_user_id')
   })
 
@@ -36,7 +36,7 @@ describe('AuthenticationMiddleware', () => {
   it('should call authorize with correct input', async () => {
     await sut.handle({ authorization })
 
-    expect(authorize).toHaveBeenCalledWith({ token: authorization })
+    expect(authorize).toHaveBeenCalledWith({ token: 'any_authorization_token' })
     expect(authorize).toHaveBeenCalledTimes(1)
   })
 

@@ -15,6 +15,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "typeRoots" : ["./src/main/types", "./node_modules/@types"],
     "paths": {
       "@/tests/*": ["../tests/*"],
       "@/*": ["*"]

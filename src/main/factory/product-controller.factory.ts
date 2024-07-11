@@ -1,4 +1,5 @@
 import { Controller } from '../../application/controllers/controller'
+import { GetExternalProductsController } from '../../application/controllers/get-external-products.controller'
 import { CreateProductController } from '../../application/controllers/create-product.controller'
 import { DeleteAllProductsController } from '../../application/controllers/delete-all-products.controller'
 import { DeleteProductController } from '../../application/controllers/delete-product.controller'
@@ -65,5 +66,11 @@ export class ProductControllerFactory {
     const makeProductSequelizeRepository = new SequelizeProductRepository(ProductModel)
     const makeProductUseCase = new SearchProductsUseCase(makeProductSequelizeRepository)
     return new SearchProductsController(makeProductUseCase)
+  }
+
+  static makeGetExternalProductsController (): Controller {
+    const makeProductSequelizeRepository = new SequelizeProductRepository(ProductModel)
+    const makeProductUseCase = new SearchProductsUseCase(makeProductSequelizeRepository)
+    return new GetExternalProductsController(makeProductUseCase)
   }
 }

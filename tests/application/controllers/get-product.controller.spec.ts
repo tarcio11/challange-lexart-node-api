@@ -1,10 +1,11 @@
 import { mock, MockProxy } from "jest-mock-extended";
 import { UseCase } from "../../../src/domain/use-cases/use-case";
 import { GetProductController } from "../../../src/application/controllers/get-product.controller";
-import { serverError } from "../../../src/application/helpers/http";
+import { notFound, serverError } from "../../../src/application/helpers/http";
 import { ProductFakeBuilder } from "../../../src/../tests/domain/fakes/product-fake.builder";
 import { Input, Output } from "../../../src/domain/use-cases/get-product.use-case";
 import { ProductModel } from "../../../src/domain/entities/product";
+import { NotFoundError } from "../../../src/domain/errors/not-found-error";
 
 describe('Controllers: GetProductController', () => {
   let sut: GetProductController
@@ -32,6 +33,15 @@ describe('Controllers: GetProductController', () => {
     const response = await sut.execute({ id: 'any_id' })
 
     expect(response).toEqual({ statusCode: 200, data: product })
+  })
+
+  it('should return 404 if use case throws NotFoundError', async () => {
+    const error = new NotFoundError('NotFoundError')
+    useCase.execute.mockRejectedValueOnce(error)
+
+    const response = await sut.execute({ id: 'any_id' })
+
+    expect(response).toEqual(notFound(error))
   })
 
   it('should return 500 if use case throws', async () => {

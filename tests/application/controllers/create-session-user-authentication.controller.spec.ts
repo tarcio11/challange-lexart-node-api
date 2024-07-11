@@ -1,8 +1,9 @@
 import { mock, MockProxy } from "jest-mock-extended";
 import { UseCase } from "../../../src/domain/use-cases/use-case";
 import { CreateSessionUserAuthenticationController } from "../../../src/application/controllers/create-session-user-authentication.controller";
-import { serverError } from "../../../src/application/helpers/http";
+import { notFound, serverError } from "../../../src/application/helpers/http";
 import { User } from "../../../src/domain/entities/user";
+import { NotFoundError } from "./../../../src/domain/errors/not-found-error";
 
 describe('Controllers: CreateSessionUserAuthenticationController', () => {
   let sut: CreateSessionUserAuthenticationController
@@ -34,6 +35,15 @@ describe('Controllers: CreateSessionUserAuthenticationController', () => {
       user: { name: 'any_name', email: 'any_email', password: 'any_password' },
       accessToken: 'any_token'
     }})
+  })
+
+  it('should return 404 if use case throws NotFoundError', async () => {
+    const error = new NotFoundError('NotFoundError')
+    useCase.execute.mockRejectedValueOnce(error)
+
+    const response = await sut.execute({ email: 'valid_email', password: 'valid_password' })
+
+    expect(response).toEqual(notFound(error))
   })
 
   it('should return 500 if use case throws', async () => {

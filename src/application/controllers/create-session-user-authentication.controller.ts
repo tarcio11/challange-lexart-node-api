@@ -1,7 +1,8 @@
 import { UseCase } from "../../domain/use-cases/use-case";
 import { Controller } from "./controller";
 import { Input, Output } from "../../domain/use-cases/create-session-user-authentication.use-case"
-import { created, HttpResponse, ok, serverError } from "../helpers/http";
+import { notFound, HttpResponse, ok, serverError } from "../helpers/http";
+import { NotFoundError } from "../../domain/errors/not-found-error";
 
 type HttpRequest = Input
 type Model = Output
@@ -14,6 +15,7 @@ export class CreateSessionUserAuthenticationController implements Controller {
       const httpResponse = await this.useCase.execute(input)
       return ok(httpResponse)
     } catch (error) {
+      if (error instanceof NotFoundError) return notFound(error)
       return serverError()
     }
   }

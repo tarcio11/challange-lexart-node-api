@@ -1,7 +1,8 @@
 import { mock, MockProxy } from "jest-mock-extended";
 import { UseCase } from "../../../src/domain/use-cases/use-case";
 import { UpdateProductController } from "../../../src/application/controllers/update-product.controller";
-import { serverError } from "../../../src/application/helpers/http";
+import { notFound, serverError } from "../../../src/application/helpers/http";
+import { NotFoundError } from "../../../src/domain/errors/not-found-error";
 
 describe('Controllers: UpdateProductController', () => {
   let sut: UpdateProductController
@@ -26,6 +27,15 @@ describe('Controllers: UpdateProductController', () => {
     const response = await sut.execute({ id: 'any_id', name: 'updated_name', price: 10, stock: 10 })
 
     expect(response).toEqual({ statusCode: 204, data: null })
+  })
+
+  it('should return 404 if use case throws NotFoundError', async () => {
+    const error = new NotFoundError('NotFoundError')
+    useCase.execute.mockRejectedValueOnce(error)
+
+    const response = await sut.execute({ id: 'any_id' })
+
+    expect(response).toEqual(notFound(error))
   })
 
   it('should return 500 if use case throws', async () => {

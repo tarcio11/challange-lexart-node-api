@@ -2,6 +2,7 @@ import { ProductModel } from "./models/product.model";
 import { Product } from "../../../../domain/entities/product";
 import { ProductRepository } from "../../../../domain/contracts/repositories/product";
 import { ProductFakeBuilder } from "../../../../../tests/domain/fakes/product-fake.builder";
+import { NotFoundError } from "../../../../domain/errors/not-found-error";
 
 export class SequelizeProductRepository implements ProductRepository {
   constructor(private productModel: typeof ProductModel) {}
@@ -23,7 +24,7 @@ export class SequelizeProductRepository implements ProductRepository {
 
   async getOne (id: string): Promise<Product> {
     const product = await this.productModel.findByPk(id);
-    if (!product) throw new Error('Product not found');
+    if (!product) throw new NotFoundError('Product not found');
     return Product.create(product.toJSON());
   }
 

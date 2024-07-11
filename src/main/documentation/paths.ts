@@ -4,7 +4,7 @@ import { productPath } from './paths/product.path'
 import { signupPath } from './paths/signup.path'
 
 export default {
-  'signUp': signupPath,
+  '/signUp': signupPath,
   '/signIn': loginPath,
   '/products': productPath,
   '/products/external': getProductsPath,

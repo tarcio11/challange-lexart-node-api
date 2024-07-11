@@ -6,6 +6,7 @@ export type Input = {
   name: string
   price: number
   stock: number
+  isExternal?: boolean
 }
 
 export class CreateProductUseCase implements UseCase<Input, void> {

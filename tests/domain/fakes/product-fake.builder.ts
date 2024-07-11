@@ -66,7 +66,7 @@ export class ProductFakeBuilder<TBuild = any> {
   }
 
   build(): TBuild {
-    const categories = new Array(this.countObjs)
+    const products = new Array(this.countObjs)
       .fill(undefined)
       .map((_, index) => {
         const product = new Product({
@@ -84,7 +84,7 @@ export class ProductFakeBuilder<TBuild = any> {
         });
         return product;
       });
-    return this.countObjs === 1 ? (categories[0] as any) : categories;
+    return this.countObjs === 1 ? (products[0] as any) : products;
   }
 
   get id() {

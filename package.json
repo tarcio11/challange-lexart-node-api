@@ -32,7 +32,6 @@
     "sequelize": "^6.37.3",
     "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.1.7",
-    "swagger-ui-dist": "^5.17.14",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {

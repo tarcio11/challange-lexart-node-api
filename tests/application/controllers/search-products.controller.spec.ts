@@ -27,7 +27,7 @@ describe('Controllers: SearchProductsController', () => {
   it('should call use case with correct input', async () => {
     await sut.execute({ page: 1, perPage: 10, name: 'any_name', id: 'any_id' })
 
-    expect(useCase.execute).toHaveBeenCalledWith({ page: 1, perPage: 10, name: 'any_name', id: 'any_id' })
+    expect(useCase.execute).toHaveBeenCalledWith({ page: 1, perPage: 10, name: 'any_name', id: 'any_id', external: false })
     expect(useCase.execute).toHaveBeenCalledTimes(1)
   })
 

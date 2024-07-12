@@ -1,0 +1,24 @@
+Decidi adotar a arquitetura clean para nossa aplicação devido à sua capacidade de organização e escalabilidade, aspectos cruciais para o sucesso do projeto a longo prazo. Além disso, minha experiência prévia com essa arquitetura me proporciona uma base sólida para o desenvolvimento.
+
+Main:
+Na camada Main, concentrei-me na configuração do servidor, utilizando o framework Express para lidar com requisições HTTP. Aqui, defini as rotas da API e implementei middlewares para lidar com tarefas comuns, como autenticação e manipulação de erros. Seguindo o princípio de que esta camada deve conter apenas configurações e não regras de negócio, utilizei o padrão adapter para facilitar a comunicação entre o Express e a camada de Application. Além disso, introduzi a validação de entrada de dados, optando pela biblioteca class-validator, uma escolha que se baseia na minha experiência prévia e na sua popularidade no mercado.
+
+Application:
+A camada Application desempenha um papel crucial na comunicação entre o servidor e os casos de uso da aplicação. Aqui, desenvolvi os controllers, responsáveis por receber as requisições HTTP, validar os dados recebidos e acionar os casos de uso apropriados. Em vez de chamar diretamente os casos de uso, uma abordagem que permite a comunicação entre camadas sem violar o princípio de inversão de dependência. Além disso, introduzi a injeção de dependência para facilitar a criação e o gerenciamento de instâncias de classes em toda a aplicação.
+
+Use Cases:
+Na camada de Use Cases, concentrei as regras de negócio da aplicação. Aqui, desenvolvi casos de uso para operações essenciais, CRUD de produos e a parte de sessao do usuario. Cada caso de uso encapsula a lógica de negócio correspondente, garantindo uma separação clara entre as diferentes responsabilidades da aplicação.
+
+Domain:
+A camada Domain é responsável por definir as entidades da aplicação e suas regras de negócio associadas. Aqui, criei as entidades de produtos e usuario, bem como as regras de negócio que regem o comportamento dessas entidades.
+
+Infra:
+Na camada de Infraestrutura, concentrei-me na implementação de funcionalidades relacionadas ao banco de dados, comunicação com APIs externas, entre outros. Aqui, criei a implementação do repositório para as entidades de Produto e Usuario. Utilizei o Postgres como banco de dados e Sequelize como ORM , empregando o padrão singleton para garantir uma única instância de conexão. Além disso, introduzi a injeção de dependência para facilitar a comunicação entre as diferentes camadas da aplicação.
+
+Testes:
+Os testes, tanto unitários quanto de integração, foram organizados em uma pasta separada, fora da estrutura principal do projeto. Utilizei a biblioteca Jest para escrever e executar os testes, aproveitando minha experiência prévia com essa ferramenta e sua popularidade no mercado. Os testes de integração foram colocados na pasta de Infraestrutura, enquanto os testes unitários foram distribuídos entre as outras camadas da aplicação.
+
+Em suma, a arquitetura clean proporciona uma base sólida para o desenvolvimento de uma aplicação robusta e escalável, com responsabilidades bem definidas e uma clara separação de preocupações. Cada camada desempenha um papel específico na aplicação, contribuindo para sua organização e manutenção a longo prazo.
+
+CI/CD:
+Essa parte é automatica através do deploy na Vercel, onde a cada push no repositório é feito o deploy da aplicação.

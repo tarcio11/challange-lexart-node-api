@@ -8,5 +8,12 @@ export interface ProductRepository {
   delete: (id: string) => Promise<void>
   loadData: () => Promise<void>
   deleteAll: () => Promise<void>
-  search: (options: { perPage: number, page: number, id?: string, name?: string, external?: boolean }) => Promise<{ data: Product[], total: number }>
+  search: (options: {
+    perPage: number,
+    page: number,
+    id?: string,
+    name?: string,
+    external?: boolean,
+    withDeleted?: boolean
+   }) => Promise<{ data: Product[], total: number }>
 }

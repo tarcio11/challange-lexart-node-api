@@ -6,6 +6,7 @@ export type ProductModel = {
   isExternal?: boolean
   createdAt?: Date
   updatedAt?: Date
+  deletedAt?: Date
 }
 
 type CreateCommand = {
@@ -23,6 +24,7 @@ export class Product {
   private isExternal?: boolean
   private createdAt?: Date
   private updatedAt?: Date
+  private deletedAt?: Date
 
   constructor (props: ProductModel) {
     this.id = props.id
@@ -32,6 +34,7 @@ export class Product {
     this.isExternal = props.isExternal ?? false
     this.createdAt = props.createdAt
     this.updatedAt = props.updatedAt
+    this.deletedAt = props.deletedAt
   }
 
   static create (command: CreateCommand): Product {
@@ -64,7 +67,8 @@ export class Product {
       stock: this.stock,
       isExternal: this.isExternal,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
+      deletedAt: this.deletedAt
     }
   }
 }

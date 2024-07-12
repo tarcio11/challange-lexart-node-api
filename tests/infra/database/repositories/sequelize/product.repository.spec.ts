@@ -169,6 +169,24 @@ describe('Repository: SequelizeProductRepository', () => {
         total: 2,
       });
     })
+
+    it('should to be able search products by withDeleted', async () => {
+      const products = ProductFakeBuilder.theProducts(2).withIsExternal(true).build();
+      await sut.create(products[0]);
+      await sut.create(products[1]);
+      const [searched] = await ProductModel.findAll();
+      await sut.deleteAll();
+
+      const result = await sut.search({ perPage: 2, page: 1, withDeleted: true });
+
+      expect(result).toEqual({
+        data: [
+          expect.objectContaining({ name: products[0].toJSON().name, price: products[0].toJSON().price, stock: products[0].toJSON().stock, isExternal: true }),
+          expect.objectContaining({ name: products[1].toJSON().name, price: products[1].toJSON().price, stock: products[1].toJSON().stock, isExternal: true }),
+        ],
+        total: 2,
+      });
+    })
   })
 
   describe('loadData', () => {

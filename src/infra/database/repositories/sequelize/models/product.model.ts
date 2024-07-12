@@ -1,6 +1,7 @@
 import {
   Column,
   DataType,
+  DeletedAt,
   Model,
   PrimaryKey,
   Table,
@@ -34,6 +35,9 @@ export class ProductModel extends Model<ProductModelProps> {
 
   @Column({ allowNull: false, type: DataType.DATE(3), field: 'created_at', defaultValue: DataType.NOW })
   declare createdAt: Date;
+
+  @DeletedAt
+  declare deletedAt: Date;
 
   @Column({ allowNull: false, type: DataType.DATE(3), field: 'updated_at', defaultValue: DataType.NOW })
   declare updatedAt: Date;

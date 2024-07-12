@@ -2,7 +2,14 @@ import { UseCase } from './use-case'
 import { ProductRepository } from '../../domain/contracts/repositories/product'
 import { ProductModel } from '../../domain/entities/product'
 
-export type Input = { perPage: number, page: number, id?: string, name?: string, external?: boolean }
+export type Input = {
+  perPage: number,
+  page: number,
+  id?: string,
+  name?: string,
+  external?: boolean,
+  withDeleted?: boolean
+}
 export type Output = { data: ProductModel[], total: number }
 
 export class SearchProductsUseCase implements UseCase<Input, Output> {

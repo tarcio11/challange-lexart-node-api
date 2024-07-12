@@ -3,6 +3,7 @@ import { Product } from "../../../../domain/entities/product";
 import { ProductRepository } from "../../../../domain/contracts/repositories/product";
 import { ProductFakeBuilder } from "../../../../../tests/domain/fakes/product-fake.builder";
 import { NotFoundError } from "../../../../domain/errors/not-found-error";
+import { Op, where } from "sequelize";
 
 export class SequelizeProductRepository implements ProductRepository {
   constructor(private productModel: typeof ProductModel) {}
@@ -58,19 +59,32 @@ export class SequelizeProductRepository implements ProductRepository {
     await this.productModel.destroy({ truncate: true });
   }
 
-  async search (options: { perPage: number, page: number, id?: string, name?: string, external?: boolean }): Promise<{ data: Product[], total: number }> {
+  async search (options: {
+    perPage: number,
+    page: number,
+    id?: string,
+    name?: string,
+    external?: boolean,
+    withDeleted?: boolean
+   }): Promise<{ data: Product[], total: number }> {
     const { perPage, page, id, name } = options;
-    const where = { ...(id && { id }), ...(name && { name }), ...(options.external && { isExternal: true }) };
+    const where: any = {
+      ...(id && { id }),
+      ...(name && { name: { [Op.like]: `%${name}%` } }),
+      ...(options.external && { isExternal: true }),
+      ...(options.withDeleted && { deletedAt: { [Op.ne]: null } }),
+
+    };
     const { count, rows } = await this.productModel.findAndCountAll({
       where,
       limit: perPage,
       offset: (page - 1) * perPage,
+      paranoid: !options.withDeleted,
     });
 
     return {
       data: rows.map(row => new Product(row.toJSON())),
       total: count,
     };
-
   }
 }
